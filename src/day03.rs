@@ -77,36 +77,21 @@ pub fn first() {
     for entry in w1.iter() {
         let (dir, rest) = entry.split_at(1);
         let count: i32 = rest.parse().unwrap();
+        let mut dx = 0;
+        let mut dy = 0;
         match dir {
-            "U" => {
-                for _i in 0..count {
-                    y += 1;
-                    steps += 1;
-                    wire_path.insert((x, y), steps);
-                }
-            }
-            "R" => {
-                for _i in 0..count {
-                    x += 1;
-                    steps += 1;
-                    wire_path.insert((x, y), steps);
-                }
-            }
-            "D" => {
-                for _i in 0..count {
-                    y -= 1;
-                    steps += 1;
-                    wire_path.insert((x, y), steps);
-                }
-            }
-            "L" => {
-                for _i in 0..count {
-                    x -= 1;
-                    steps += 1;
-                    wire_path.insert((x, y), steps);
-                }
-            }
-            _ => println!("NONE"),
+            "U" => dy = 1,
+            "R" => dx = 1,
+            "D" => dy = -1,
+            "L" => dx = -1,
+            _ => println!("ooops"),
+        }
+
+        for _i in 0..count {
+            x += dx;
+            y += dy;
+            steps += 1;
+            wire_path.insert((x, y), steps);
         }
     }
 
@@ -117,48 +102,23 @@ pub fn first() {
     for entry in w2.iter() {
         let (dir, rest) = entry.split_at(1);
         let count: i32 = rest.parse().unwrap();
+        let mut dx = 0;
+        let mut dy = 0;
         match dir {
-            "U" => {
-                for _i in 0..count {
-                    y += 1;
-                    steps += 1;
-                    if wire_path.contains_key(&(x, y)) {
-                        let steps1 = wire_path.get(&(x, y)).unwrap();
-                        intersections.push((x, y, x.abs() + y.abs(), steps + steps1));
-                    }
-                }
+            "U" => dy = 1,
+            "R" => dx = 1,
+            "D" => dy = -1,
+            "L" => dx = -1,
+            _ => println!("ooops"),
+        }
+        for _i in 0..count {
+            x += dx;
+            y += dy;
+            steps += 1;
+            if wire_path.contains_key(&(x, y)) {
+                let steps1 = wire_path.get(&(x, y)).unwrap();
+                intersections.push((x, y, x.abs() + y.abs(), steps + steps1));
             }
-            "R" => {
-                for _i in 0..count {
-                    x += 1;
-                    steps += 1;
-                    if wire_path.contains_key(&(x, y)) {
-                        let steps1 = wire_path.get(&(x, y)).unwrap();
-                        intersections.push((x, y, x.abs() + y.abs(), steps + steps1));
-                    }
-                }
-            }
-            "D" => {
-                for _i in 0..count {
-                    y -= 1;
-                    steps += 1;
-                    if wire_path.contains_key(&(x, y)) {
-                        let steps1 = wire_path.get(&(x, y)).unwrap();
-                        intersections.push((x, y, x.abs() + y.abs(), steps + steps1));
-                    }
-                }
-            }
-            "L" => {
-                for _i in 0..count {
-                    x -= 1;
-                    steps += 1;
-                    if wire_path.contains_key(&(x, y)) {
-                        let steps1 = wire_path.get(&(x, y)).unwrap();
-                        intersections.push((x, y, x.abs() + y.abs(), steps + steps1));
-                    }
-                }
-            }
-            _ => println!("NONE"),
         }
     }
 
