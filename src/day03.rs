@@ -66,6 +66,20 @@ fn get_wire2() -> [&'static str; 301] {
     ];
 }
 
+fn get_deltas(dir: &str) -> (i32, i32) {
+    let mut dx = 0;
+    let mut dy = 0;
+    match dir {
+        "U" => dy = 1,
+        "R" => dx = 1,
+        "D" => dy = -1,
+        "L" => dx = -1,
+        _ => println!("ooops"),
+    }
+
+    return (dx, dy);
+}
+
 pub fn first() {
     let w1 = get_wire1();
     let w2 = get_wire2();
@@ -77,16 +91,7 @@ pub fn first() {
     for entry in w1.iter() {
         let (dir, rest) = entry.split_at(1);
         let count: i32 = rest.parse().unwrap();
-        let mut dx = 0;
-        let mut dy = 0;
-        match dir {
-            "U" => dy = 1,
-            "R" => dx = 1,
-            "D" => dy = -1,
-            "L" => dx = -1,
-            _ => println!("ooops"),
-        }
-
+        let (dx, dy) = get_deltas(dir);
         for _i in 0..count {
             x += dx;
             y += dy;
@@ -102,15 +107,7 @@ pub fn first() {
     for entry in w2.iter() {
         let (dir, rest) = entry.split_at(1);
         let count: i32 = rest.parse().unwrap();
-        let mut dx = 0;
-        let mut dy = 0;
-        match dir {
-            "U" => dy = 1,
-            "R" => dx = 1,
-            "D" => dy = -1,
-            "L" => dx = -1,
-            _ => println!("ooops"),
-        }
+        let (dx, dy) = get_deltas(dir);
         for _i in 0..count {
             x += dx;
             y += dy;
