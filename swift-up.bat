@@ -1,0 +1,1 @@
+docker-compose -f docker-compose-swift.yml run --rm app bash
