@@ -19,7 +19,7 @@ func updateDepths(node: Node) {
     }
 }
 
-func buildOrbits() -> (Node, Node, Node) {
+func buildOrbits() -> (center: Node, you: Node, san: Node) {
     let textFile = try! String(contentsOf: URL(fileURLWithPath: "./src/day06.input"))
 
     let lines = textFile.components(separatedBy: "\r\n")
@@ -69,9 +69,9 @@ func buildOrbits() -> (Node, Node, Node) {
     
 
     return (
-        center,
-        you,
-        san
+        center: center,
+        you: you,
+        san: san
     )
 }
 
@@ -122,10 +122,10 @@ func findCommonAncestor(you: Node, san: Node) {
 
 
 func day06First() {
-    let (center, you, san) = buildOrbits()
-    let total = traverse(node: center, counter: 0)
+    let orbits = buildOrbits()
+    let total = traverse(node: orbits.center, counter: 0)
     print("total", total)
 
-    findCommonAncestor(you: you, san: san)
+    findCommonAncestor(you: orbits.you, san: orbits.san)
 
 }
