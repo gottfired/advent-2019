@@ -1,1 +1,1 @@
-day08Second()
+day06First()

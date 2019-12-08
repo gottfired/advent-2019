@@ -20,10 +20,7 @@ func updateDepths(node: Node) {
 }
 
 func buildOrbits() -> (Node, Node, Node) {
-    var textFile = ""
-    do {
-        textFile = try String(contentsOf: URL(fileURLWithPath: "./src/day06.input")) 
-    } catch {}
+    let textFile = try! String(contentsOf: URL(fileURLWithPath: "./src/day06.input"))
 
     let lines = textFile.components(separatedBy: "\r\n")
     var orbits: [String: Node] = [:]
