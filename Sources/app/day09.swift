@@ -100,7 +100,7 @@ class Day09 {
 
         // sort, so we contain angles starting at 90 degrees up
         angles.sort()
-        print("angles", angles[0], angleMap[angles[0]], maxSeen[angleMap[angles[0]]!])
+        // print("angles", angles[0], angleMap[angles[0]], maxSeen[angleMap[angles[0]]!])
 
         var sortedMaxSeen:[[(Int, Int)]] = []
         for angle in angles {
@@ -129,7 +129,7 @@ class Day09 {
         }
 
         var index = 0
-        for i in 0...199 {
+        for _ in 0...199 {
             // find next non empty array
             while sortedMaxSeen[index].isEmpty {
                 index += 1
@@ -139,7 +139,7 @@ class Day09 {
             } 
             
             let target = sortedMaxSeen[index].popLast()
-            print("shooting", target)
+            print("shooting", target as Any)
 
             index += 1
         }
