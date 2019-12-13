@@ -25,10 +25,16 @@ class Machine {
 
     init(withProgram program: [Int]) {
         self.program = program
+
+        // Add some ram
+        let memory=Array<Int>(repeating: 0, count:1000000)
+        self.program.append(contentsOf:memory)
     }
 
     init() {
-        // pass
+        // Add some ram
+        let memory=Array<Int>(repeating: 0, count:1000000)
+        self.program.append(contentsOf:memory)
     }
 
     func extract_instructions(opcode: Int) -> (Int, Int, Int, Int) {
@@ -69,19 +75,26 @@ class Machine {
             }
             
         
-            // target is always POSITION_MODE
-            assert(param2 == POSITION_MODE)
+            // target is never IMMEDIATE_MODE
+            assert(param2 != IMMEDIATE_MODE)
             var instruction_move = 4
             var jump = -1
             if instruction == Command.add.rawValue
                 || instruction == Command.multiply.rawValue {
                 let lhs = extract_params(param_mode:param0, index:instructionPtr + 1)
                 let rhs = extract_params(param_mode:param1, index:instructionPtr + 2)
-                let target = program[instructionPtr + 3]
+                var target = program[instructionPtr + 3]
+                if param2 == RELATIVE_MODE {
+                    target += relativeBase
+                }
+                
                 if instruction == Command.add.rawValue { program[target] = lhs + rhs }
                 if instruction == Command.multiply.rawValue { program[target] = lhs * rhs }
             } else if instruction == Command.input.rawValue {
-                let target = program[instructionPtr + 1] 
+                var target = program[instructionPtr + 1] 
+                if param0 == RELATIVE_MODE {
+                    target += relativeBase
+                }
                 
                 print("### Input", param0, target, relativeBase)
                 
@@ -113,7 +126,12 @@ class Machine {
                 || instruction == Command.equals.rawValue {
                 let lhs = extract_params(param_mode:param0, index:instructionPtr + 1)
                 let rhs = extract_params(param_mode:param1, index:instructionPtr + 2)
-                let target = program[instructionPtr + 3]
+                var target = program[instructionPtr + 3]
+                if param2 == RELATIVE_MODE {
+                    target += relativeBase
+                }
+                
+                
                 let condition = instruction == Command.less.rawValue ? lhs < rhs : lhs == rhs
                 if condition {
                     program[target] = 1
