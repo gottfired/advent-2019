@@ -1,8 +1,12 @@
 
 class Day07 {
+
+    var program = [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5]
+    var instructionPtr = 0
+
     func get_program() -> [Int] {
-        // return [3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0]
-        return [3,8,1001,8,10,8,105,1,0,0,21,34,59,76,101,114,195,276,357,438,99999,3,9,1001,9,4,9,1002,9,4,9,4,9,99,3,9,102,4,9,9,101,2,9,9,102,4,9,9,1001,9,3,9,102,2,9,9,4,9,99,3,9,101,4,9,9,102,5,9,9,101,5,9,9,4,9,99,3,9,102,2,9,9,1001,9,4,9,102,4,9,9,1001,9,4,9,1002,9,3,9,4,9,99,3,9,101,2,9,9,1002,9,3,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,99,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,99]
+        return [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5]
+        // return [3,8,1001,8,10,8,105,1,0,0,21,34,59,76,101,114,195,276,357,438,99999,3,9,1001,9,4,9,1002,9,4,9,4,9,99,3,9,102,4,9,9,101,2,9,9,102,4,9,9,1001,9,3,9,102,2,9,9,4,9,99,3,9,101,4,9,9,102,5,9,9,101,5,9,9,4,9,99,3,9,102,2,9,9,1001,9,4,9,102,4,9,9,1001,9,4,9,1002,9,3,9,4,9,99,3,9,101,2,9,9,1002,9,3,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,99,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,99]
     }
 
     func extract_instructions(opcode: Int) -> (Int, Int, Int, Int) {
@@ -21,18 +25,22 @@ class Day07 {
         }
     }
 
-    func runMachine(input:[Int]) -> Int {
-        var program = get_program()
-        var index = 0
+    func reset() {
+        program = get_program()
+    }
+
+    func runMachine(input:[Int]) -> (Int, Bool) {
+        // print("run machine with", input, index)
         var inputPos = 0
         var output = 0
-        while index < program.count {
-            // print("index", index)
-            if program[index] == 99 {
+        var halt = false
+        while instructionPtr < program.count {
+            if program[instructionPtr] == 99 {
+                halt = true
                 break
             }
 
-            let opcode = program[index];
+            let opcode = program[instructionPtr];
             let (instruction, param0, param1, param2) = extract_instructions(opcode: opcode)
             // print(
             //     "opcode {}, instruction {}, p0 {}, p1 {}, p2 {}",
@@ -43,19 +51,23 @@ class Day07 {
             var jump = -1
             if instruction == 1 {
                 // add
-                let lhs = extract_params(program:program, param_mode:param0, index:index + 1)
-                let rhs = extract_params(program:program, param_mode:param1, index:index + 2)
-                let target = program[index + 3]
+                let lhs = extract_params(program:program, param_mode:param0, index:instructionPtr + 1)
+                let rhs = extract_params(program:program, param_mode:param1, index:instructionPtr + 2)
+                let target = program[instructionPtr + 3]
                 program[target] = lhs + rhs
             } else if instruction == 2 {
                 // multiply
-                let lhs = extract_params(program:program, param_mode:param0, index:index + 1)
-                let rhs = extract_params(program:program, param_mode:param1, index:index + 2)
-                let target = program[index + 3]
+                let lhs = extract_params(program:program, param_mode:param0, index:instructionPtr + 1)
+                let rhs = extract_params(program:program, param_mode:param1, index:instructionPtr + 2)
+                let target = program[instructionPtr + 3]
                 program[target] = lhs * rhs
             } else if instruction == 3 {
-                // program
-                let target = program[index + 1]
+                // input
+                let target = program[instructionPtr + 1]
+                if inputPos >= input.count {
+                    // wait for next input
+                    break
+                }
                 assert(inputPos < input.count)
                 let input_value = input[inputPos]
                 inputPos += 1
@@ -64,13 +76,13 @@ class Day07 {
                 // print("Wrote \(input_value) to address \(target)");
             } else if instruction == 4 {
                 // output
-                let target = program[index + 1]
+                let target = program[instructionPtr + 1]
                 output = program[target]
                 // print("### Output is", output)
                 instruction_move = 2
             } else if instruction == 5 {
-                let condition = extract_params(program:program, param_mode:param0, index:index + 1) != 0
-                let address = extract_params(program:program, param_mode:param1, index:index + 2)
+                let condition = extract_params(program:program, param_mode:param0, index:instructionPtr + 1) != 0
+                let address = extract_params(program:program, param_mode:param1, index:instructionPtr + 2)
                 // print("Jump {} to {}", condition, address)
                 if condition {
                     jump = address
@@ -78,8 +90,8 @@ class Day07 {
                     instruction_move = 3
                 }
             } else if instruction == 6 {
-                let condition = extract_params(program:program, param_mode:param0, index:index + 1) == 0
-                let address = extract_params(program:program, param_mode:param1, index:index + 2)
+                let condition = extract_params(program:program, param_mode:param0, index:instructionPtr + 1) == 0
+                let address = extract_params(program:program, param_mode:param1, index:instructionPtr + 2)
                 // print("Jump {} to {}", condition, address)
                 if condition {
                     jump = address
@@ -87,18 +99,18 @@ class Day07 {
                     instruction_move = 3
                 }
             } else if instruction == 7 {
-                let lhs = extract_params(program:program, param_mode:param0, index:index + 1)
-                let rhs = extract_params(program:program, param_mode:param1, index:index + 2)
-                let target = program[index + 3]
+                let lhs = extract_params(program:program, param_mode:param0, index:instructionPtr + 1)
+                let rhs = extract_params(program:program, param_mode:param1, index:instructionPtr + 2)
+                let target = program[instructionPtr + 3]
                 if lhs < rhs {
                     program[target] = 1
                 } else {
                     program[target] = 0
                 }
             } else if instruction == 8 {
-                let lhs = extract_params(program:program, param_mode:param0, index:index + 1)
-                let rhs = extract_params(program:program, param_mode:param1, index:index + 2)
-                let target = program[index + 3]
+                let lhs = extract_params(program:program, param_mode:param0, index:instructionPtr + 1)
+                let rhs = extract_params(program:program, param_mode:param1, index:instructionPtr + 2)
+                let target = program[instructionPtr + 3]
                 if lhs == rhs {
                     program[target] = 1
                 } else {
@@ -107,13 +119,14 @@ class Day07 {
             }
 
             if jump >= 0 {
-                index = jump
+                instructionPtr = jump
             } else {
-                index += instruction_move
+                instructionPtr += instruction_move
             }
         }
 
-        return output
+        // print("output", output, halt)
+        return (output, halt)
     }
 }
 
@@ -161,11 +174,53 @@ func day07First() {
     var maxSettings:[Int] = []
     var array = [0,1,2,3,4]
     heapPermutation(a:&array, size:5, n:5, operation: {(data)->Void in
-        var out = machine.runMachine(input:[data[0], 0])
-        out = machine.runMachine(input:[data[1], out])
-        out = machine.runMachine(input:[data[2], out])
-        out = machine.runMachine(input:[data[3], out])
-        out = machine.runMachine(input:[data[4], out])          
+        var (out, _) = machine.runMachine(input:[data[0], 0])
+        (out, _) = machine.runMachine(input:[data[1], out])
+        (out, _) = machine.runMachine(input:[data[2], out])
+        (out, _) = machine.runMachine(input:[data[3], out])
+        (out, _) = machine.runMachine(input:[data[4], out])     
+        if out > maxOutput {
+            maxOutput = out
+            maxSettings = data
+        }     
+    })
+
+    print("Max = ", maxOutput, maxSettings)   
+}
+
+
+func day07Second() {
+    
+    var maxOutput = 0
+    var maxSettings:[Int] = []
+    var array = [9,8,7,6,5]
+    heapPermutation(a:&array, size:5, n:5, operation: {(data)->Void in
+        let machineA = Day07()
+        let machineB = Day07()
+        let machineC = Day07()
+        let machineD = Day07()
+        let machineE = Day07()
+
+        let machines = [machineA, machineB, machineC, machineD, machineE]
+
+        var (out, halt) = machineA.runMachine(input:[data[0]])
+        (out, halt) = machineB.runMachine(input:[data[1]])
+        (out, halt) = machineC.runMachine(input:[data[2]])
+        (out, halt) = machineD.runMachine(input:[data[3]])
+        (out, halt) = machineE.runMachine(input:[data[4]])
+
+        (out, halt) = machineA.runMachine(input:[0])
+        var currentMachine = 1
+        while halt == false {
+            (out, halt) = machines[currentMachine].runMachine(input:[out])
+            currentMachine += 1
+            if currentMachine == 5 {
+                currentMachine = 0
+            }
+        }
+        
+        print("data", data, out)
+
         if out > maxOutput {
             maxOutput = out
             maxSettings = data
