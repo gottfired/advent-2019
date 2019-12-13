@@ -5,7 +5,7 @@ let RELATIVE_MODE = 2
 
 class Machine {
 
-    let DEBUG = true
+    let DEBUG = false
 
     enum Command: Int {
         case add = 1
@@ -96,7 +96,7 @@ class Machine {
                     target += relativeBase
                 }
                 
-                print("### Input", param0, target, relativeBase)
+                // print("### Input", param0, target, relativeBase)
                 
                 if inputPos >= input.count {
                     // wait for next input
@@ -107,7 +107,7 @@ class Machine {
                 inputPos += 1
                 program[target] = input_value
                 instruction_move = 2
-                print("Wrote \(input_value) to address \(target)");
+                // print("Wrote \(input_value) to address \(target)");
             } else if instruction == Command.output.rawValue {
                 output = extract_params(param_mode:param0, index:instructionPtr + 1)
                 if DEBUG { print("### Output is", output) }
