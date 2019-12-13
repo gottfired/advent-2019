@@ -1,6 +1,6 @@
 import Foundation
 
-class Day09 {
+class Day10 {
     let input = """
         .###.###.###.#####.#
         #####.##.###..###..#
@@ -146,8 +146,8 @@ class Day09 {
     }
 }
 
-func day09First() {
-    let day = Day09()
+func day10First() {
+    let day = Day10()
     day.parse()
     day.scan()
     day.shoot()
