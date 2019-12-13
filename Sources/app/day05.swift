@@ -39,8 +39,6 @@ func get_input() -> [Int] {
     ]
 }
 
-let POSITION_MODE = 0
-let IMMEDIATE_MODE = 1
 
 func extract_instructions(opcode: Int) -> (Int, Int, Int, Int) {
     let instruction = opcode % 100

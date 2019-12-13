@@ -1,5 +1,11 @@
 
+let POSITION_MODE = 0
+let IMMEDIATE_MODE = 1
+let RELATIVE_MODE = 2
+
 class Machine {
+
+    let DEBUG = true
 
     enum Command: Int {
         case add = 1
@@ -10,10 +16,20 @@ class Machine {
         case jumpFalse
         case less
         case equals
+        case adjustBase
     }
 
     var program = [3,8,1001,8,10,8,105,1,0,0,21,34,59,76,101,114,195,276,357,438,99999,3,9,1001,9,4,9,1002,9,4,9,4,9,99,3,9,102,4,9,9,101,2,9,9,102,4,9,9,1001,9,3,9,102,2,9,9,4,9,99,3,9,101,4,9,9,102,5,9,9,101,5,9,9,4,9,99,3,9,102,2,9,9,1001,9,4,9,102,4,9,9,1001,9,4,9,1002,9,3,9,4,9,99,3,9,101,2,9,9,1002,9,3,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,99,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,99]
     var instructionPtr = 0
+    var relativeBase = 0
+
+    init(withProgram program: [Int]) {
+        self.program = program
+    }
+
+    init() {
+        // pass
+    }
 
     func extract_instructions(opcode: Int) -> (Int, Int, Int, Int) {
         let instruction = opcode % 100
@@ -24,11 +40,14 @@ class Machine {
     }
 
     func extract_params(param_mode: Int, index: Int) -> Int {
+        let value = program[index]
         if param_mode == POSITION_MODE {
-            return program[program[index]]
-        } else {
-            return program[index]
-        }
+            return program[value]
+        } else if param_mode == IMMEDIATE_MODE {
+            return value
+        } else /*if param_mode == RELATIVE_MODE*/ {
+            return program[value + relativeBase]
+        } 
     }
 
     func runMachine(input:[Int]) -> (Int, Bool) {
@@ -44,6 +63,11 @@ class Machine {
 
             let opcode = program[instructionPtr];
             let (instruction, param0, param1, param2) = extract_instructions(opcode: opcode)
+
+            if DEBUG {
+                print("Opcode", opcode)
+            }
+            
         
             // target is always POSITION_MODE
             assert(param2 == POSITION_MODE)
@@ -57,7 +81,10 @@ class Machine {
                 if instruction == Command.add.rawValue { program[target] = lhs + rhs }
                 if instruction == Command.multiply.rawValue { program[target] = lhs * rhs }
             } else if instruction == Command.input.rawValue {
-                let target = program[instructionPtr + 1]
+                let target = program[instructionPtr + 1] 
+                
+                print("### Input", param0, target, relativeBase)
+                
                 if inputPos >= input.count {
                     // wait for next input
                     break
@@ -67,11 +94,10 @@ class Machine {
                 inputPos += 1
                 program[target] = input_value
                 instruction_move = 2
-                // print("Wrote \(input_value) to address \(target)");
+                print("Wrote \(input_value) to address \(target)");
             } else if instruction == Command.output.rawValue {
-                let target = program[instructionPtr + 1]
-                output = program[target]
-                // print("### Output is", output)
+                output = extract_params(param_mode:param0, index:instructionPtr + 1)
+                if DEBUG { print("### Output is", output) }
                 instruction_move = 2
             } else if instruction == Command.jumpTrue.rawValue
                 || instruction == Command.jumpFalse.rawValue {
@@ -94,11 +120,17 @@ class Machine {
                 } else {
                     program[target] = 0
                 }
-            } 
+            } else if instruction == Command.adjustBase.rawValue {
+                let delta = extract_params(param_mode:param0, index:instructionPtr + 1)
+                relativeBase += delta
+                instruction_move = 2
+            }
 
             if jump >= 0 {
+                if DEBUG { print("jump", jump) }
                 instructionPtr = jump
             } else {
+                if DEBUG { print("move", instruction_move) }
                 instructionPtr += instruction_move
             }
         }
@@ -168,7 +200,7 @@ func day07First() {
 
 
 func day07Second() {
-    
+
     var maxOutput = 0
     var maxSettings:[Int] = []
     var array = [5,6,7,8,9]
