@@ -182,7 +182,6 @@ func day12Second() {
         let last = Vec3(x: 0, y:0, z: 0)
         let lastVel = Vec3(x: 0, y:0, z: 0)
 
-        var verify:[Int:Vec3] = [:]
         while steps < 1000000 {
             day.update()
             if day.moons[moonIndex].pos.x == initial.x {

@@ -1,9 +1,9 @@
-class PaintingRobot {
+struct Vec2 : Hashable {
+    var x: Int
+    var y: Int
+}
 
-    struct Vec2 : Hashable {
-        let x: Int
-        let y: Int
-    }
+class PaintingRobot {
 
     static let BLACK = 0
     static let WHITE = 1
@@ -15,7 +15,6 @@ class PaintingRobot {
     var dir = Vec2(x:0, y:1)
     var tiles: [Vec2: Int] = [:]
 
-    
     let machine:Machine
 
     init() {
@@ -111,7 +110,7 @@ func day11Second() {
     for y in (minY...maxY).reversed() {
         var line = ""
         for x in minX...maxX {
-            let c = robot.tiles[PaintingRobot.Vec2(x:x, y:y)] ?? 0
+            let c = robot.tiles[Vec2(x:x, y:y)] ?? 0
             line += c == 0 ? " " : "X"
         }
         print(line)
