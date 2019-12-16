@@ -43,14 +43,14 @@ func sign(_ i: Int) -> Int {
 
 class Day12 {
     let moons = [        
-        // Moon(pos: Vec3(x:-2, y:9, z:-5)),
-        // Moon(pos: Vec3(x:16, y:19, z:9)),
-        // Moon(pos: Vec3(x:0, y:3, z:6)),
-        // Moon(pos: Vec3(x:11, y:0, z:11))
-        Moon(pos: Vec3(x:-1, y:0, z:2)),
-        Moon(pos: Vec3(x:2, y:-10, z:-7)),
-        Moon(pos: Vec3(x:4, y:-8, z:8)),
-        Moon(pos: Vec3(x:3, y:5, z:-1))
+        Moon(pos: Vec3(x:-2, y:9, z:-5)),
+        Moon(pos: Vec3(x:16, y:19, z:9)),
+        Moon(pos: Vec3(x:0, y:3, z:6)),
+        Moon(pos: Vec3(x:11, y:0, z:11))
+        // Moon(pos: Vec3(x:-1, y:0, z:2)),
+        // Moon(pos: Vec3(x:2, y:-10, z:-7)),
+        // Moon(pos: Vec3(x:4, y:-8, z:8)),
+        // Moon(pos: Vec3(x:3, y:5, z:-1))
     ]
 
     func updateGravities() {
@@ -114,7 +114,7 @@ func day12First() {
 
 func findPeriod(zeroes: [Int]) -> Int {
     var p = -1
-    print("checking", zeroes.count)
+    // print("checking", zeroes.count)
     let comparisonStart = 80
     for i in (comparisonStart+1)...zeroes.count {
         // random: start comparison at 80
@@ -149,89 +149,96 @@ func findPeriod(zeroes: [Int]) -> Int {
 
 
 func day12Second() {
-    let day = Day12()
-    // var energy = -1
-    var steps = 0
 
     // Data
-    // Moon(pos: Vec3(x:-2, y:9, z:-5)),
-    // Moon(pos: Vec3(x:16, y:19, z:9)),
-    // Moon(pos: Vec3(x:0, y:3, z:6)),
-    // Moon(pos: Vec3(x:11, y:0, z:11))
-
-    // Sample
     let startPositions = [
-        Vec3(x:-1, y:0, z:2),
-        Vec3(x:2, y:-10, z:-7),
-        Vec3(x:4, y:-8, z:8),
-        Vec3(x:3, y:5, z:-1)
+        Vec3(x:-2, y:9, z:-5),
+        Vec3(x:16, y:19, z:9),
+        Vec3(x:0, y:3, z:6),
+        Vec3(x:11, y:0, z:11)
     ]
 
-    var zeroesX:[Int] = []
-    var zeroesY:[Int] = []
-    var zeroesZ:[Int] = []
-    var velX:[Int] = []
-    var velY:[Int] = []
-    var velZ:[Int] = []
-    
-    let moonIndex = 3
-    let initial = startPositions[moonIndex]
-    let last = Vec3(x: 0, y:0, z: 0)
-    let lastVel = Vec3(x: 0, y:0, z: 0)
 
-    var verify:[Int:Vec3] = [:]
-    while steps < 100000 {
-        day.update()
-        if day.moons[moonIndex].pos.x == initial.x {
-            // record delta to last "Nullstelle"
-            zeroesX.append(steps-last.x)
-            // print("steps", steps, steps-last.x)
-            last.x = steps
-        }
-        if day.moons[moonIndex].pos.y == initial.y {
-            // record delta to last "Nullstelle"
-            zeroesY.append(steps-last.y)
-            last.y = steps
-        }
-        if day.moons[moonIndex].pos.z == initial.z {
-            // record delta to last "Nullstelle"
-            zeroesZ.append(steps-last.z)
-            last.z = steps
-        }
+    // Sample
+    // let startPositions = [
+    //     Vec3(x:-1, y:0, z:2),
+    //     Vec3(x:2, y:-10, z:-7),
+    //     Vec3(x:4, y:-8, z:8),
+    //     Vec3(x:3, y:5, z:-1)
+    // ]
 
-
-        if day.moons[moonIndex].vel.x == 0 {
-            // record delta to last "Nullstelle"
-            velX.append(steps-lastVel.x)
-            lastVel.x = steps
-        }
-        if day.moons[moonIndex].vel.y == 0 {
-            // record delta to last "Nullstelle"
-            velY.append(steps-lastVel.y)
-            lastVel.y = steps
-        }
-        if day.moons[moonIndex].vel.z == 0 {
-            // record delta to last "Nullstelle"
-            velZ.append(steps-lastVel.z)
-            lastVel.z = steps
-        }
+    for moonIndex in 0...3 {
+        let day = Day12()
+        var steps = 0
         
-        steps += 1
+        var zeroesX:[Int] = []
+        var zeroesY:[Int] = []
+        var zeroesZ:[Int] = []
+        var velX:[Int] = []
+        var velY:[Int] = []
+        var velZ:[Int] = []
+        
+        let initial = startPositions[moonIndex]
+        let last = Vec3(x: 0, y:0, z: 0)
+        let lastVel = Vec3(x: 0, y:0, z: 0)
+
+        var verify:[Int:Vec3] = [:]
+        while steps < 1000000 {
+            day.update()
+            if day.moons[moonIndex].pos.x == initial.x {
+                // record delta to last "Nullstelle"
+                zeroesX.append(steps-last.x)
+                // print("steps", steps, steps-last.x)
+                last.x = steps
+            }
+            if day.moons[moonIndex].pos.y == initial.y {
+                // record delta to last "Nullstelle"
+                zeroesY.append(steps-last.y)
+                last.y = steps
+            }
+            if day.moons[moonIndex].pos.z == initial.z {
+                // record delta to last "Nullstelle"
+                zeroesZ.append(steps-last.z)
+                last.z = steps
+            }
+
+
+            if day.moons[moonIndex].vel.x == 0 {
+                // record delta to last "Nullstelle"
+                velX.append(steps-lastVel.x)
+                lastVel.x = steps
+            }
+            if day.moons[moonIndex].vel.y == 0 {
+                // record delta to last "Nullstelle"
+                velY.append(steps-lastVel.y)
+                lastVel.y = steps
+            }
+            if day.moons[moonIndex].vel.z == 0 {
+                // record delta to last "Nullstelle"
+                velZ.append(steps-lastVel.z)
+                lastVel.z = steps
+            }
+            
+            steps += 1
+        }
+
+        // print(zeroesX.count, zeroesY.count, zeroesZ.count)
+        // print(velX.count, velY.count, velZ.count)
+
+        let periodX = findPeriod(zeroes:zeroesX)
+        let periodY = findPeriod(zeroes:zeroesY)
+        let periodZ = findPeriod(zeroes:zeroesZ)
+        
+        let periodVelX = findPeriod(zeroes:velX)
+        let periodVelY = findPeriod(zeroes:velY)
+        let periodVelZ = findPeriod(zeroes:velZ)
+        
+        print("Moon", moonIndex)
+        print("Period", periodX, periodY, periodZ)
+        print("Vel", periodVelX, periodVelY, periodVelZ)
     }
 
-    // print(zeroesX.count, zeroesY.count, zeroesZ.count)
-    // print(velX.count, velY.count, velZ.count)
-
-    let periodX = findPeriod(zeroes:zeroesX)
-    let periodY = findPeriod(zeroes:zeroesY)
-    let periodZ = findPeriod(zeroes:zeroesZ)
     
-    let periodVelX = findPeriod(zeroes:velX)
-    let periodVelY = findPeriod(zeroes:velY)
-    let periodVelZ = findPeriod(zeroes:velZ)
-    
-    print("Period", periodX, periodY, periodZ)
-    print("Vel", periodVelX, periodVelY, periodVelZ)
 }
 
 // pos0
@@ -253,3 +260,18 @@ func day12Second() {
 // moon1 -> 9 28 44
 // moon2 -> 18 28 44 9 14 44
 // moon3 -> 
+
+
+// Moon 0
+// Period 186028 286332 96236
+// Vel 186028 286332 96236
+// Moon 1
+// Period 186028 286332 96236
+// Vel 186028 286332 96236
+// Moon 2
+// Period 186028 286332 48118
+// Vel 186028 286332 48118
+// Moon 3
+// Period 186028 286332 48118
+// Vel 186028 286332 48118
+// -> 320380285873116
